@@ -1,0 +1,69 @@
+server:
+  port: 8113
+  
+springdoc:
+  packagesToScan: br.com.ms.controller
+  swagger-ui:
+    path: /swagger/ui
+    enabled: true
+  api-docs:
+    path: /swagger/json
+    enabled: true
+    
+logging:
+  level:
+    root: INFO
+    
+spring:
+  application:
+    name: ms-shoppingcart
+    
+  datasource:
+    driverClassName: org.h2.Driver
+    password: 123
+    username: oscar
+    url: jdbc:h2:mem:shoppingcart_db;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect    
+    
+# RabbitMQ
+  rabbitmq.host: localhost
+  rabbitmq.port: 5672
+  rabbitmq.username: guest
+  rabbitmq.password: guest
+     
+rabbitmq:
+  exchange.name: order_exchange
+  routing:  
+    key: order_routingkey
+    statuskey: status_routingkey
+  
+  queue:
+    order: order_notification   # Fila de Emissão de Ordem de Pagamento
+    status: status_pay          # Fila de Emissão do Status do Pagamento
+      
+# Eureka Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://myUser:myPass@${EUREKA_SERVER}:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} 
+
+
+
+
+
+        

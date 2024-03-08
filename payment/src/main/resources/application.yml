@@ -1,0 +1,46 @@
+server:
+  port: 8112  
+
+spring:
+  application:
+    name: ms-payment
+    
+# RabbitMQ
+  rabbitmq.host: localhost
+  rabbitmq.port: 5672
+  rabbitmq.username: guest
+  rabbitmq.password: guest    
+
+rabbitmq:
+  exchange.name: order_exchange
+  routing:  
+    key: order_routingkey
+    statuskey: status_routingkey
+  
+  queue:
+    order: order_notification   # Fila de Emissão de Ordem de Pagamento
+    status: status_pay          # Fila de Emissão do Status do Pagamento
+  
+springdoc:
+  packagesToScan: br.com.ms.controller
+  swagger-ui:
+    path: /swagger/ui
+    enabled: true
+  api-docs:
+    path: /swagger/json
+    enabled: true
+    
+logging:
+  level:
+    root: INFO
+    
+# Eureka Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://myUser:myPass@${EUREKA_SERVER}:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}      
+        
+
